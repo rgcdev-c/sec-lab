@@ -1,24 +1,28 @@
-CREATE DATABASE IF NOT EXISTS seminar_security;
-USE seminar_security;
+CREATE DATABASE IF NOT EXISTS security_lab;
+USE security_lab;
 
--- Table for Login & Password Change Demo
+-- 1. Users table with VARCHAR(255) for password_hash()
+DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (username, password) VALUES 
-('admin', 'supersecret123'),
-('student1', 'pass1234');
-
--- Table for Guestbook XSS Demo
+-- 2. Comments table for the Seminar Guestbook
+DROP TABLE IF EXISTS comments;
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    message TEXT NOT NULL
+    name VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO comments (name, message) VALUES 
-('Alice', 'Great seminar so far!'),
-('Bob', 'Excited to learn about web security.');
+-- 3. Insert default test account
+-- Username: admin
+-- Password: password
+INSERT INTO users (username, password) VALUES (
+    'admin', 
+    '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+);
